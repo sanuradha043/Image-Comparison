@@ -60,6 +60,11 @@ def conv2d_bn(x,
     tensor = Activation('relu')(tensor)
     return tensor
 
+WEIGHTS_mod = [
+  'conv1', 'bn1', 'conv2', 'bn2', 'conv3', 'bn3',
+  'dense_layer'
+]
+
 WEIGHTS = [
   'conv1', 'bn1', 'conv2', 'bn2', 'conv3', 'bn3',
   'inception_3a_1x1_conv', 'inception_3a_1x1_bn',
@@ -129,7 +134,7 @@ conv_shape = {
 
 def load_weights_from_FaceNet(FRmodel):
     # Load weights from csv files (which was exported from Openface torch model)
-    weights = WEIGHTS
+    weights = WEIGHTS_mod
     weights_dict = load_weights()
 
     # Set layer weights of the model
@@ -149,7 +154,7 @@ def load_weights():
     for n in fileNames:
         paths[n.replace('.csv', '')] = dirPath + '/' + n
 
-    for name in WEIGHTS:
+    for name in WEIGHTS_mod:
         if 'conv' in name:
             conv_w = genfromtxt(paths[name + '_w'], delimiter=',', dtype=None)
             conv_w = np.reshape(conv_w, conv_shape[name])
